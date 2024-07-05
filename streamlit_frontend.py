@@ -134,9 +134,14 @@ if st.sidebar.button('Generate'):
         taskId = parsed_response_dict.get('data', {}).get('taskId', "not found")
         # st.write(taskId)
         data = refresh_product(taskId)
-        images_data = data["data"]["result"]["data"]
-        # Update the session state with new images
-        st.session_state.images_data = images_data
+
+        if not data["data"]["result"]["data"]:
+            st.write("Could not generate images, please try again.")
+
+        else:
+            images_data = data["data"]["result"]["data"]
+            # Update the session state with new images
+            st.session_state.images_data = images_data
         
     else:
         st.write(response.json())
