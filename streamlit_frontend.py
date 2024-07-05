@@ -73,7 +73,7 @@ def refresh_product(taskId):
                 time.sleep(2)  # Wait for 2 seconds before retrying
 
 
-models = ['Unstable', 'RealVision', 'SDXL']
+models = ['RealVision', 'SDXL', 'Unstable']
 styles = ['(No style)', 'Japanese Anime', 'Digital/Oil Painting', "Pixar/Disney Character", "Photographic", "Comic book", "Line art", "Black and White Film Noir", "Isometric Rooms"]
 
 # Sidebar inputs
