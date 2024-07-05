@@ -63,7 +63,7 @@ def refresh_product(taskId):
                 return data
                 break
             
-            elif time.time() - start_time > 60:  # Check if 50 seconds have passed
+            elif time.time() - start_time > 120:  # Check if 50 seconds have passed
                 print("Timeout reached without success.")
                 return []
                 break
