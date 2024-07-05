@@ -33,7 +33,7 @@ st.markdown(
 if 'images_data' not in st.session_state:
     st.session_state.images_data = []
 
-current_page_url = st.experimental_get_query_params()
+current_page_url = st.query_params()
 access_key = current_page_url["access_key"][0]
 # st.write(current_page_url["access_key"])
 
