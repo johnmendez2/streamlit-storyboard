@@ -77,13 +77,6 @@ models = ['Unstable', 'RealVision', 'SDXL']
 styles = ['(No style)', 'Japanese Anime', 'Digital/Oil Painting', "Pixar/Disney Character", "Photographic", "Comic book", "Line art", "Black and White Film Noir", "Isometric Rooms"]
 
 # Sidebar inputs
-height = st.sidebar.number_input('Height', min_value=768)
-width = st.sidebar.number_input('Width', min_value=768)
-id_length = st.sidebar.number_input('ID Length', min_value=1)
-model_name = st.sidebar.selectbox('Model Name', models)
-guidance_scale = st.sidebar.slider('Guidance Scale', min_value=1, max_value=10, value=7)
-seed = st.sidebar.slider('Seed', min_value=1, max_value=10000000)
-num_steps = st.sidebar.number_input('Number of Steps', min_value=20, max_value=40)
 general_prompt = st.sidebar.text_area('General Prompt')
 negative_prompt = st.sidebar.text_area('Negative Prompt')
 style_name = st.sidebar.selectbox('Style Name', styles)
@@ -93,6 +86,13 @@ prompt_text = st.sidebar.text_area('Enter Prompts (each on a new line)', value="
 
 # Splitting the input text by newlines to build the prompt array
 prompt_array = prompt_text.split('\n') if prompt_text else []
+height = st.sidebar.number_input('Height', min_value=768)
+width = st.sidebar.number_input('Width', min_value=768)
+id_length = st.sidebar.number_input('ID Length', min_value=1)
+model_name = st.sidebar.selectbox('Model Name', models)
+guidance_scale = st.sidebar.slider('Guidance Scale', min_value=1, max_value=10, value=7)
+seed = st.sidebar.slider('Seed', min_value=1, max_value=10000000)
+num_steps = st.sidebar.number_input('Number of Steps', min_value=20, max_value=40)
 # st.write(st.session_state.images_data)
 
 def display_images():
@@ -134,9 +134,12 @@ if st.sidebar.button('Generate'):
         taskId = parsed_response_dict.get('data', {}).get('taskId', "not found")
         # st.write(taskId)
         data = refresh_product(taskId)
-        images_data = data["data"]["result"]["data"]
-        # Update the session state with new images
-        st.session_state.images_data = images_data
+        if not data["data"]["result"]["data"]:
+            st.write("Could not generate images, please try again.")
+        else:
+            images_data = data["data"]["result"]["data"]
+            # Update the session state with new images
+            st.session_state.images_data = images_data
         
     else:
         st.write(response.json())
