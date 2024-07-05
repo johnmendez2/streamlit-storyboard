@@ -33,13 +33,13 @@ st.markdown(
 if 'images_data' not in st.session_state:
     st.session_state.images_data = []
 
-current_page_url = st.query_params()
-access_key = current_page_url["access_key"][0]
-# st.write(current_page_url["access_key"])
+current_page_url = st.query_params["access_key"]
+access_key = st.query_params["access_key"]
+# st.write(access_key)
 
 
-app_id = current_page_url["app_id"][0]
-# st.write(current_page_url["app_id"])
+app_id = st.query_params["app_id"]
+# st.write(app_id)
 
 # print(access_key[0])
 # print(app_id[0])
@@ -63,7 +63,7 @@ def refresh_product(taskId):
                 return data
                 break
             
-            elif time.time() - start_time > 120:  # Check if 50 seconds have passed
+            elif time.time() - start_time > 60:  # Check if 50 seconds have passed
                 print("Timeout reached without success.")
                 return []
                 break
@@ -77,7 +77,7 @@ models = ['Unstable', 'RealVision', 'SDXL']
 styles = ['(No style)', 'Japanese Anime', 'Digital/Oil Painting', "Pixar/Disney Character", "Photographic", "Comic book", "Line art", "Black and White Film Noir", "Isometric Rooms"]
 
 # Sidebar inputs
-general_prompt = st.sidebar.text_area('General Prompt')
+general_prompt = st.sidebar.text_area('General Prompt', value="A young businessman")
 negative_prompt = st.sidebar.text_area('Negative Prompt')
 style_name = st.sidebar.selectbox('Style Name', styles)
 
@@ -134,12 +134,9 @@ if st.sidebar.button('Generate'):
         taskId = parsed_response_dict.get('data', {}).get('taskId', "not found")
         # st.write(taskId)
         data = refresh_product(taskId)
-        if not data["data"]["result"]["data"]:
-            st.write("Could not generate images, please try again.")
-        else:
-            images_data = data["data"]["result"]["data"]
-            # Update the session state with new images
-            st.session_state.images_data = images_data
+        images_data = data["data"]["result"]["data"]
+        # Update the session state with new images
+        st.session_state.images_data = images_data
         
     else:
         st.write(response.json())
