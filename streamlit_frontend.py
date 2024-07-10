@@ -46,7 +46,7 @@ app_id = st.query_params["app_id"]
 token = f'Bearer {access_key}'
 
 def refresh_product(taskId):
-    url = f'https://marketplace-api-user.staging.devsaitech.com/api/v1/user/products/{app_id}/refresh/{taskId}'
+    url = f'https://mkpl-user.staging.devsaitech.com/api/v1/user/products/{app_id}/refresh/{taskId}'
     headers = {
         'Content-Type': 'application/json',
         'Authorization': token    
@@ -125,7 +125,7 @@ if st.sidebar.button('Generate'):
     }
 
 
-    response = requests.post(f'https://marketplace-api-user.staging.devsaitech.com/api/v1/user/products/{app_id}/use', json=payload, headers=headers)
+    response = requests.post(f'https://mkpl-user.staging.devsaitech.com/api/v1/user/products/{app_id}/use', json=payload, headers=headers)
 
     # Check if the request was successful
     if response.status_code == 201:
