@@ -2,6 +2,9 @@ import streamlit as st
 import time
 import requests
 from PIL import Image
+import os
+
+base_url = os.getenv('BASE_URL')
 # Predefined lists for model and style names
 img = Image.open('logo.png')
 st.set_page_config(
@@ -46,7 +49,7 @@ app_id = st.query_params["app_id"]
 token = f'Bearer {access_key}'
 
 def refresh_product(taskId):
-    url = f'https://mkpl-user.staging.devsaitech.com/api/v1/user/products/{app_id}/refresh/{taskId}'
+    url = f'{base_url}/api/v1/user/products/{app_id}/refresh/{taskId}'
     headers = {
         'Content-Type': 'application/json',
         'Authorization': token    
