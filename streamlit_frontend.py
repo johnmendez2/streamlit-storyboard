@@ -128,7 +128,7 @@ if st.sidebar.button('Generate'):
     }
 
 
-    response = requests.post(f'https://mkpl-user.staging.devsaitech.com/api/v1/user/products/{app_id}/use', json=payload, headers=headers)
+    response = requests.post(f'{base_url}/api/v1/user/products/{app_id}/use', json=payload, headers=headers)
 
     # Check if the request was successful
     if response.status_code == 201:
