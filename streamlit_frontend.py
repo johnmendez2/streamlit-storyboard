@@ -89,8 +89,8 @@ prompt_text = st.sidebar.text_area('Enter Prompts (each on a new line)', value="
 
 # Splitting the input text by newlines to build the prompt array
 prompt_array = prompt_text.split('\n') if prompt_text else []
-height = st.sidebar.number_input('Height', min_value=768)
-width = st.sidebar.number_input('Width', min_value=768)
+height = st.sidebar.number_input('Height', min_value=768, max_value=1024)
+width = st.sidebar.number_input('Width', min_value=768, max_value=1024)
 id_length = st.sidebar.number_input('ID Length', min_value=1)
 model_name = st.sidebar.selectbox('Model Name', models)
 guidance_scale = st.sidebar.slider('Guidance Scale', min_value=1, max_value=10, value=7)
