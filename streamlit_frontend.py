@@ -48,6 +48,10 @@ app_id = st.query_params["app_id"]
 # print(app_id[0])
 token = f'Bearer {access_key}'
 
+import requests
+import time
+import streamlit as st
+
 def refresh_product(taskId):
     url = f'{base_url}/api/v1/user/products/{app_id}/refresh/{taskId}'
     headers = {
@@ -57,23 +61,46 @@ def refresh_product(taskId):
     
     start_time = time.time()
     with st.spinner("Generating Storyboard"):
-        while True:
-            response = requests.get(url, headers=headers)
-            data = response.json()
-            # st.write(data)
-            if data['data']['status'] != 'Pending':
-                print("Success:", data)
-                return data
-                break
-            
-            elif time.time() - start_time > 120:  # Check if 50 seconds have passed
-                print("Timeout reached without success.")
-                return []
-                break
-            
-            else:
-                print("Request not yet successful. Retrying...")
-                time.sleep(2)  # Wait for 2 seconds before retrying
+        try:
+            while True:
+                response = requests.get(url, headers=headers)
+                
+                # Ensure the request was successful
+                response.raise_for_status()
+
+                data = response.json()
+                
+                # Check if the task is no longer pending
+                if data['data']['status'] != 'Pending':
+                    print("Success:", data)
+                    return data
+                    break
+                
+                # Timeout after 120 seconds
+                elif time.time() - start_time > 120:
+                    print("Timeout reached without success.")
+                    return []
+                    break
+                
+                else:
+                    print("Request not yet successful. Retrying...")
+                    time.sleep(2)  # Wait for 2 seconds before retrying
+
+        except requests.exceptions.RequestException as e:
+            # Handle any request-related errors
+            print(f"Request failed: {e}")
+            return []
+
+        except ValueError as e:
+            # Handle any JSON decoding errors
+            print(f"JSON decoding failed: {e}")
+            return []
+
+        except KeyError as e:
+            # Handle any missing keys in the response data
+            print(f"Key error: {e}")
+            return []
+
 
 
 models = ['RealVision', 'SDXL', 'Unstable']
@@ -138,7 +165,7 @@ if st.sidebar.button('Generate'):
         # st.write(taskId)
         data = refresh_product(taskId)
 
-        if not data["data"]["result"]["data"]:
+        if not data["data"]["result"]["data"] or data == []:
             st.write("Could not generate images, please try again.")
 
         else:
