@@ -77,7 +77,7 @@ def refresh_product(taskId):
                     break
                 
                 # Timeout after 120 seconds
-                elif time.time() - start_time > 120:
+                elif time.time() - start_time > 160:
                     print("Timeout reached without success.")
                     return []
                     break
@@ -128,7 +128,7 @@ num_steps = st.sidebar.number_input('Number of Steps', min_value=20, max_value=4
 def display_images():
     for index, image_url in enumerate(st.session_state.images_data):
         st.image(image_url, use_column_width=True)
-
+def_neg_prompt = "nudity, nude, sexy, sex, nsfw, no clothing, ugly, deformed, no hands, no limbs"
 # API call
 if st.sidebar.button('Generate'):
 
@@ -142,7 +142,7 @@ if st.sidebar.button('Generate'):
         "seed": seed,
         "num_steps": num_steps,
         "general_prompt": general_prompt,
-        "negative_prompt": negative_prompt,
+        "negative_prompt": negative_prompt + def_neg_prompt,
         "prompt_array": prompt_array,
         "style_name": style_name,
         "id_length": id_length
